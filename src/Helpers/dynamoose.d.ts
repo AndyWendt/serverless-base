@@ -57,7 +57,7 @@ declare module "dynamoose" {
         queryOne<T>(key: string): Query<T>;
         scan<T>(filter, options, callback: (err, results: T[]) => void): void;
         scan<T>(filter, callback: (err, results: T[]) => void): void;
-        scan<T>(filter: string): Scan<T>;
+        scan<T>(filter?: string): Scan<T>;
         update(key, update, options, callback: (err) => void);
     }
     export class VirtualType {
