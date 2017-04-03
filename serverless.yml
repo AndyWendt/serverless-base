@@ -1,0 +1,29 @@
+service: ServerlessBase
+
+plugins:
+  - serverless-secrets-plugin
+
+custom:
+  secrets: ${file(secrets.${opt:stage, self:provider.stage}.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-west-2
+  profile: oddjobb
+  role: arn:aws:iam::705948397564:role/serverless-backend-role
+  environment:
+    FROM: 'test@test.com'
+    TO: ${self:custom.secrets.TO}
+    AUTH0_SECRET: ${self:custom.secrets.AUTH0_SECRET}
+    ENV: ${self:custom.secrets.ENV}
+
+functions:
+  contactAdd:
+    handler: app/Contacts/contacts.add
+#    role: arn:aws:iam::705948397564:role/lambda_ses_send
+    events:
+      - http:
+          path: contact
+          method: post
+          cors: true
